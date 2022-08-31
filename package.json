@@ -2,13 +2,19 @@
   "name": "fs-deployment-lab",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
+    "start": "node server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+YOUR-GITHUB-URL"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "homepage": "YOUR-GITHUB-URL",
   "dependencies": {
     "express": "^4.18.1"
   }
