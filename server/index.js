@@ -7,7 +7,7 @@ const app = express();
 // app.use(rollbar.errorHandler())
 
 app.use(cors());
-app.get('/', function(req, res) {
+app.get('/api/turtles', function(req, res) {
     res.sendFile(path.join(__dirname, '../index.html'))
     rollbar.log("Accessed HTML successfully");
 });
