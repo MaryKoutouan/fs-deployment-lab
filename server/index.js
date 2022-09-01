@@ -10,11 +10,7 @@ app.use(cors());
 
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, '../index.html'));
-    try {
-        nonExistentFunction();
-      } catch (error) {
-        console.error(error);
-      }
+
     rollbar.log("Accessed HTML successfully");
 });
 
