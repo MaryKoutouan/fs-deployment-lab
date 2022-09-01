@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deployment Lab </title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <h1>World of Sea Turtles!</h1>
+  <img src="https://www.ucf.edu/news/files/2021/02/juvenile_green_sea_turtle_for_web-768x512.jpg" alt="Nemo the sea turtle"></img>
+
+  <h2>Sea Turtle Life </h2>
+  <p>Images and videos to explain more about sea turtle life.</p>
+  <div id="video">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/5Rmv3nliwCs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/I8LHR7KN1tY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  <div>
+  <img src="https://ocean.si.edu/sites/default/files/styles/article_main_image/public/2018-12/turtle-863336_1280.jpg.webp?itok=LBC4-xez" alt="Ben the turtle"></img>
+  
+  <img src="https://thumbs.dreamstime.com/b/sea-turtle-swims-under-water-background-coral-reefs-maldives-indian-ocean-reef-130672165.jpg"></img>
+  
+  
+</div>
+
+<p>Sea turtles can be found all around the world, from the cold waters off California to the warm beaches of the Coral Triangle. Males never leave the ocean, while females will come ashore to lay their eggs on sandy beaches during the nesting season. WWF tracks sea turtles to learn more about the species movements and routes from feeding and breeding grounds to other areas of the ocean.</p>
+
+<div>
+<h3>How long do sea turtles live?</h3>
+<p>Sea turtles live a long time (some can live up to 50 years or more) and have similar lifespans to humans. Most marine turtles take decades to mature—between 20 and 30 years—and remain actively reproductive for another 10 years.</p>
+</div>
+<h4>What do sea turtles eat? and Why are sea turtles endangered?</h4>
+
+<p>Depending on the species, sea turtles feast on anything from seaweed to jellyfish. They consume squid, barnacles, sponges and sea anemones, among other creatures, while green turtles—the herbivores—primarily eat sea grasses and algae.</p>
+<p>
+They are classified as endangered mostly due to human activity. Accidental capture by fishing gear, which often results in death, is the greatest threat to most sea turtles. They are also killed for their eggs, meat, skin and shells, and suffer from poaching and over-exploitation. Climate change also impacts sea turtle nesting beaches and eggs.
+</p>
+</body>
+
+<script>
+  const addForm = document.querySelector('form');
+  const nameInput = document.querySelector('input');
+  const container = document.querySelector('section');
+
+  function putTheThingInTheView(res) {
+      container.innerHTML = ''
+      nameInput.value = ''
+
+      res.data.forEach((turtleName, index) => {
+          container.innerHTML += `<p name=${index}>${turtleName}</p>`
+      })
+
+      document.querySelectorAll('p').forEach(element => {
+          const theIndexValue = element.getAttribute('name');
+
+          element.addEventListener('click', () => {
+              axios
+                  .delete(`/api/turtles/${theIndexValue}`)
+                  .then(res => {
+                      putTheThingInTheView(res)
+                  })
+          })
+      })
+  }
+
+  function submitHandler(evt) {
+      evt.preventDefault();
+
+      axios
+          .post('/api/turtles', { name: nameInput.value })
+          .then(res => {
+              putTheThingInTheView(res)
+          })
+          .catch(err => {
+              nameInput.value = ''
+
+              const notif = document.createElement('aside')
+              notif.innerHTML = `<p>${err.response.data}</p>
+              <button class="close">close</button>`
+              document.body.appendChild(notif)
+
+              document.querySelectorAll('.close').forEach(btn => {
+                  btn.addEventListener('click', (e) => {
+                      e.target.parentNode.remove()
+                  })
+              })
+          })
+  }
+
+  // get turtles list on initial load
+  axios
+      .get('/api/turtles')
+      .then(res => {
+          putTheThingInTheView(res)
+      })
+
+  addForm.addEventListener('submit', submitHandler)
+</script>
+
+<script src="/js"></script>
+
+</html>
