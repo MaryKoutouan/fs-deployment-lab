@@ -8,15 +8,16 @@ const app = express();
 
 app.use(cors());
 
-app.get('/api/turtles', function(req, res) {
-    res.sendFile(path.join(__dirname, '../index.html'))
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, '../index.html'));
+    try {
+        nonExistentFunction();
+      } catch (error) {
+        console.error(error);
+      }
     rollbar.log("Accessed HTML successfully");
 });
-try {
-    nonExistentFunction();
-  } catch (error) {
-    console.error(error);
-  }
+
 // include and initialize the rollbar library with your access token
 var Rollbar = require('rollbar')
 var rollbar = new Rollbar({
